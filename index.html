@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUNRISE Ironworker Tonnage Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 20px;
+            background-color: #fff;
+            flex: 1;
+            min-width: 200px;
+            max-width: 300px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .card h3 {
+            margin-bottom: 15px;
+        }
+        .infographic {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .shape {
+            display: inline-block;
+            margin: auto;
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+        .circle {
+            border-radius: 50%;
+            background: linear-gradient(to right, #2E3192, #1BFFFF);
+        }
+        .rectangle {
+            background: linear-gradient(to right, #D4145A, #FBB03B);
+        }
+        .square {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(to right, #009245, #FCEE21);
+        }
+        .hexagon {
+            background: linear-gradient(to right, #8E2DE2, #4A00E0);
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+        .triangle {
+            background: linear-gradient(to right, #f4d941, #ec8235);
+            clip-path: polygon(50% 0, 100% 100%, 0 100%);
+        }
+        .slot {
+            background: linear-gradient(to right, #0575E6, #021B79);
+            border-radius: 50px;
+        }
+        .input-group {
+            margin-bottom: 10px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .input-group input {
+            width: 95%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
+        .result {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid #007bff;
+            border-radius: 10px;
+            background-color: #e9f7fe;
+            color: #0056b3;
+            font-weight: bold;
+            text-align: center;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .card {
+            background-color: #2c2c2c;
+            border-color: #444;
+        }
+        body.dark-mode .result {
+            background-color: #333;
+            border-color: #666;
+            color: #ffffff;
+        }
+        body.dark-mode button {
+            background-color: #444;
+        }
+        body.dark-mode button:hover {
+            background-color: #333;
+        }
+
+/* Dark mode toggle button */
+.dark-mode-toggle {
+    position: fixed;
+    top: 3px;
+    right: 3px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 20px;
+    z-index: 9999;  /* Ensure the button stays on top */
+}
+.dark-mode-toggle:hover {
+    background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
+
+    <h1>SUNRISE Ironworker Tonnage Calculator</h1>
+    <p>Enter the values for thickness, hole size, and material tensile strength to calculate tonnage for different hole shapes</p>
+    <p><b>Hole size must be greater than plate thickness</b></p>
+    <p>Mild Steel 42 to 46 kg/mm².</p>
+
+    <div class="container">
+        <div class="container">
+        <!-- Round Hole -->
+        <div class="card">
+            <h3>Round Hole</h3>
+            <div class="infographic">
+                <div class="shape circle"></div>
+            </div>
+            <div class="input-group">
+                <label for="round-thickness">Thickness (T)</label>
+                <input type="number" id="round-thickness" placeholder="Enter thickness (mm)">
+            </div>
+            <div class="input-group">
+                <label for="round-diameter">Hole Diameter (D)</label>
+                <input type="number" id="round-diameter" placeholder="Enter diameter (mm)">
+            </div>
+            <div class="input-group">
+                <label for="round-hardness">Material Tensile Strength</label>
+                <input type="number" id="round-hardness" placeholder="Enter tensile strength (kg/mm²)">
+            </div>
+            <button onclick="calculateRound()">Calculate</button>
+            <div class="result" id="round-result">Result will appear here</div>
+        </div>
+
+        <!-- Rectangle Hole -->
+        <div class="card">
+            <h3>Rectangle Hole</h3>
+            <div class="infographic">
+                <div class="shape rectangle" style="width: 150px; height: 80px;"></div>
+            </div>
+            <div class="input-group">
+                <label for="rect-thickness">Thickness (T)</label>
+                <input type="number" id="rect-thickness" placeholder="Enter thickness (mm)">
+            </div>
+            <div class="input-group">
+                <label for="rect-length">Length (a)</label>
+                <input type="number" id="rect-length" placeholder="Enter length (mm)">
+            </div>
+            <div class="input-group">
+                <label for="rect-width">Width (b)</label>
+                <input type="number" id="rect-width" placeholder="Enter width (mm)">
+            </div>
+            <div class="input-group">
+                <label for="rect-hardness">Material Tensile Strength</label>
+                <input type="number" id="rect-hardness" placeholder="Enter tensile strength (kg/mm²)">
+            </div>
+            <button onclick="calculateRectangle()">Calculate</button>
+            <div class="result" id="rect-result">Result will appear here</div>
+        </div>
+
+        <!-- Square Hole -->
+        <div class="card">
+            <h3>Square Hole</h3>
+            <div class="infographic">
+                <div class="shape square"></div>
+            </div>
+            <div class="input-group">
+                <label for="square-thickness">Thickness (T)</label>
+                <input type="number" id="square-thickness" placeholder="Enter thickness (mm)">
+            </div>
+            <div class="input-group">
+                <label for="square-size">Hole Size (a)</label>
+                <input type="number" id="square-size" placeholder="Enter size (mm)">
+            </div>
+            <div class="input-group">
+                <label for="square-hardness">Material Tensile Strength</label>
+                <input type="number" id="square-hardness" placeholder="Enter tensile strength (kg/mm²)">
+            </div>
+            <button onclick="calculateSquare()">Calculate</button>
+            <div class="result" id="square-result">Result will appear here</div>
+        </div>
+
+        <!-- Hexagon Hole -->
+        <div class="card">
+            <h3>Hexagon Hole</h3>
+            <div class="infographic">
+                <div class="shape hexagon"></div>
+            </div>
+            <div class="input-group">
+                <label for="hexagon-thickness">Thickness (T)</label>
+                <input type="number" id="hexagon-thickness" placeholder="Enter thickness (mm)">
+            </div>
+            <div class="input-group">
+                <label for="hexagon-size">Hole Size (a)</label>
+                <input type="number" id="hexagon-size" placeholder="Enter size (mm)">
+            </div>
+            <div class="input-group">
+                <label for="hexagon-hardness">Material Tensile Strength</label>
+                <input type="number" id="hexagon-hardness" placeholder="Enter tensile strength (kg/mm²)">
+            </div>
+            <button onclick="calculateHexagon()">Calculate</button>
+            <div class="result" id="hexagon-result">Result will appear here</div>
+        </div>
+
+<!-- Triangle Hole -->
+        <div class="card">
+            <h3>Triangle Hole</h3>
+            <div class="infographic">
+                <div class="shape triangle"></div>
+        </div>
+            <div class="input-group">
+                <label for="triangle-thickness">Thickness (T)</label>
+                <input type="number" id="triangle-thickness" placeholder="Enter thickness (mm)">
+        </div>
+            <div class="input-group">
+                <label for="triangle-length-a">Length (a)</label>
+                <input type="number" id="triangle-length-a" placeholder="Enter length a (mm)">
+        </div>
+            <div class="input-group">
+                <label for="triangle-length-b">Length (b)</label>
+                <input type="number" id="triangle-length-b" placeholder="Enter length b (mm)">
+        </div>
+            <div class="input-group">
+                <label for="triangle-length-c">Length (c)</label>
+                <input type="number" id="triangle-length-c" placeholder="Enter length c (mm)">
+        </div>
+            <div class="input-group">
+                <label for="triangle-hardness">Material Tensile Strength</label>
+                <input type="number" id="triangle-hardness" placeholder="Enter tensile strength (kg/mm²)">
+            </div>
+            <button onclick="calculateTriangle()">Calculate</button>
+            <div class="result" id="triangle-result">Result will appear here</div>
+</div>
+
+        <!-- Slot/Oblong Hole -->
+        <div class="card">
+            <h3>Slot/Oblong Hole</h3>
+            <div class="infographic">
+                <div class="shape slot" style="width: 150px; height: 60px;"></div>
+            </div>
+            <div class="input-group">
+                <label for="slot-thickness">Thickness (T)</label>
+                <input type="number" id="slot-thickness" placeholder="Enter thickness (mm)">
+            </div>
+            <div class="input-group">
+                <label for="slot-length">Length (a)</label>
+                <input type="number" id="slot-length" placeholder="Enter length (mm)">
+            </div>
+            <div class="input-group">
+                <label for="slot-radius">Radius (b)</label>
+                <input type="number" id="slot-radius" placeholder="Enter radius (mm)">
+            </div>
+            <div class="input-group">
+                <label for="slot-hardness">Material Tensile Strength</label>
+                <input type="number" id="slot-hardness" placeholder="Enter tensile strength (kg/mm²)">
+            </div>
+            <button onclick="calculateSlot()">Calculate</button>
+            <div class="result" id="slot-result">Result will appear here</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const currentMode = document.body.classList.contains('dark-mode');
+            document.getElementById('darkModeToggle').textContent = currentMode ? '🌞' : '🌙';
+        }
+
+        function calculateRound() {
+            const thickness = parseFloat(document.getElementById('round-thickness').value);
+            const diameter = parseFloat(document.getElementById('round-diameter').value);
+            const hardness = parseFloat(document.getElementById('round-hardness').value);
+            if (thickness && diameter && hardness) {
+                const area = Math.PI * (diameter);
+                const tonnage = (area * thickness * hardness) / 1000;
+                document.getElementById('round-result').innerText = `Tonnage = ${tonnage.toFixed(3)} tons`;
+            } else {
+                document.getElementById('round-result').innerText = "Please fill all fields!";
+            }
+        }
+
+        function calculateRectangle() {
+            const thickness = parseFloat(document.getElementById('rect-thickness').value);
+            const length = parseFloat(document.getElementById('rect-length').value);
+            const width = parseFloat(document.getElementById('rect-width').value);
+            const hardness = parseFloat(document.getElementById('rect-hardness').value);
+            if (thickness && length && width && hardness) {
+                const perimeter = 2 * (length + width);
+                const tonnage = (perimeter * thickness * hardness) / 1000;
+                document.getElementById('rect-result').innerText = `Tonnage = ${tonnage.toFixed(3)} tons`;
+            } else {
+                document.getElementById('rect-result').innerText = "Please fill all fields!";
+            }
+        }
+
+        function calculateSquare() {
+            const thickness = parseFloat(document.getElementById('square-thickness').value);
+            const size = parseFloat(document.getElementById('square-size').value);
+            const hardness = parseFloat(document.getElementById('square-hardness').value);
+            if (thickness && size && hardness) {
+                const perimeter = 4 * size;
+                const tonnage = (perimeter * thickness * hardness) / 1000;
+                document.getElementById('square-result').innerText = `Tonnage = ${tonnage.toFixed(3)} tons`;
+            } else {
+                document.getElementById('square-result').innerText = "Please fill all fields!";
+            }
+        }
+
+        function calculateHexagon() {
+            const thickness = parseFloat(document.getElementById('hexagon-thickness').value);
+            const size = parseFloat(document.getElementById('hexagon-size').value);
+            const hardness = parseFloat(document.getElementById('hexagon-hardness').value);
+            if (thickness && size && hardness) {
+                const perimeter = 6 * size;
+                const tonnage = (perimeter * thickness * hardness) / 1000;
+                document.getElementById('hexagon-result').innerText = `Tonnage = ${tonnage.toFixed(3)} tons`;
+            } else {
+                document.getElementById('hexagon-result').innerText = "Please fill all fields!";
+            }
+        }
+
+function calculateTriangle() {
+    const thickness = parseFloat(document.getElementById('triangle-thickness').value);
+    const lengthA = parseFloat(document.getElementById('triangle-length-a').value);
+    const lengthB = parseFloat(document.getElementById('triangle-length-b').value);
+    const lengthC = parseFloat(document.getElementById('triangle-length-c').value);
+    const hardness = parseFloat(document.getElementById('triangle-hardness').value);
+    if (thickness && lengthA && lengthB && lengthC && hardness) {
+        const perimeter = lengthA + lengthB + lengthC;
+        const tonnage = (perimeter * thickness * hardness) / 1000;
+        document.getElementById('triangle-result').innerText = `Tonnage = ${tonnage.toFixed(3)} tons`;
+    } else {
+        document.getElementById('triangle-result').innerText = "Please fill all fields!";
+    }
+}
+
+        function calculateSlot() {
+            const thickness = parseFloat(document.getElementById('slot-thickness').value);
+            const length = parseFloat(document.getElementById('slot-length').value);
+            const radius = parseFloat(document.getElementById('slot-radius').value);
+            const hardness = parseFloat(document.getElementById('slot-hardness').value);
+            if (thickness && length && radius && hardness) {
+                const perimeter = 2 * (length - radius) + (Math.PI * radius);
+                const tonnage = (perimeter * thickness * hardness) / 1000;
+                document.getElementById('slot-result').innerText = `Tonnage = ${tonnage.toFixed(3)} tons`;
+            } else {
+                document.getElementById('slot-result').innerText = "Please fill all fields!";
+            }
+}
+    </script>
+</body>
+</html>
