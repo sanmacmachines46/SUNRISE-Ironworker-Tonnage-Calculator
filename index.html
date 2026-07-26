@@ -582,7 +582,7 @@ function calculateTriangle() {
             if (thickness && length && radius && hardness) {
                 const perimeter = 2 * (length - radius) + (Math.PI * radius);
                 const tonnage = (perimeter * thickness * hardness) / 1000;
-                document.getElementById('slot-result').innerText = `Tonnage = ${tonnage.toFixed(3)} tons`;
+                document.getElementById('slot-result').innerText = `Tonnage = ${tonnage.toFixed(3)} Tons`;
             } else {
                 document.getElementById('slot-result').innerText = "Please fill all fields!";
             }
