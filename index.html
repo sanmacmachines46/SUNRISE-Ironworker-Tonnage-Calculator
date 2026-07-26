@@ -338,7 +338,7 @@ class="highlight"
 
 <div class="header">
         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <h1 class="title">Ironworker Tonnage Calculators</h1>
+        <h1 class="title">Ironworker Tonnage Calculator</h1>
     </div>
 
     <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">🌙</button>
@@ -582,7 +582,7 @@ function calculateTriangle() {
             if (thickness && length && radius && hardness) {
                 const perimeter = 2 * (length - radius) + (Math.PI * radius);
                 const tonnage = (perimeter * thickness * hardness) / 1000;
-                document.getElementById('slot-result').innerText = `Tonnage = ${tonnage.toFixed(3)} Tons`;
+                document.getElementById('slot-result').innerText = `Tonnage = ${tonnage.toFixed(3)} tons`;
             } else {
                 document.getElementById('slot-result').innerText = "Please fill all fields!";
             }
